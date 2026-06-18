@@ -24,7 +24,17 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <!-- MONETAG SCRIPT (REAL SDK) -->
-   
+    
+
+    <style>
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: #0f172a; 
+            color: #fff; 
+            user-select: none; 
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+        }
 
         /* Glassmorphism */
         .glass-card {
@@ -646,14 +656,27 @@
             const m = document.getElementById('ad-click-req-modal');
             m.classList.remove('hidden'); m.classList.add('flex');
         }
-function handleAdClickLink() {
-    const m = document.getElementById('ad-click-req-modal');
-    m.classList.add('hidden'); 
-    m.classList.remove('flex');
-    
-    // অ্যাড ছাড়াই সরাসরি রিওয়ার্ড সেভ করবে
-    saveGameEarnings(pendingRewardAmount, pendingRewardSrc);
-}
+
+        function handleAdClickLink() {
+            isWaitingForAdClick = true;
+            adClickStartTime = Date.now();
+            
+            if (typeof show_ === 'function') {
+                show_().then(() => {
+                    if (isWaitingForAdClick) {
+                        isWaitingForAdClick = false;
+                        showToast("You must CLICK the ad to claim!", "error");
+                    }
+                }).catch(e => {
+                    console.error("Ad Error", e);
+                    showToast("Ad Failed. Try again.", "error");
+                    isWaitingForAdClick = false;
+                });
+            } else {
+                showToast("Ad Not Ready", "error");
+                isWaitingForAdClick = false;
+            }
+        }
 
         function showClaimOverlay(source) {
             pendingRewardSrc = source;
@@ -662,12 +685,22 @@ function handleAdClickLink() {
         }
 
         function startAdSequence() {
-    document.getElementById('claim-overlay').classList.add('hidden');
-    document.getElementById('claim-overlay').classList.remove('flex');
-    
-    // অ্যাড ছাড়াই সরাসরি রিওয়ার্ড সেভ করবে
-    saveGameEarnings(pendingRewardAmount, pendingRewardSrc);
-}
+            document.getElementById('claim-overlay').classList.add('hidden');
+            document.getElementById('claim-overlay').classList.remove('flex');
+            showToast("Loading Ad...", "info");
+            
+            if (typeof show_ === 'function') {
+                show_().then(() => {
+                    saveGameEarnings(pendingRewardAmount, pendingRewardSrc);
+                }).catch(e => {
+                    console.error('Monetag error', e);
+                    saveGameEarnings(pendingRewardAmount, pendingRewardSrc);
+                });
+            } else {
+                console.warn("Monetag SDK not ready");
+                saveGameEarnings(pendingRewardAmount, pendingRewardSrc);
+            }
+        }
 
         async function saveGameEarnings(amount, source) {
             if (!currentUser) return;
