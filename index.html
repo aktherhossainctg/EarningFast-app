@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EarnFast - Play & Win</title>
+    <title>Play & Earn - Play & Win</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -133,7 +133,7 @@
             </div>
         </div>
         
-        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-300 mb-2">EarnFast</h1>
+        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-300 mb-2">Play & Earn</h1>
         <p class="text-slate-400 mb-8 text-sm">Loading your profile...</p>
         
         <div id="loading-spinner" class="flex flex-col items-center">
@@ -630,8 +630,8 @@
         }
 
         function shareOnTelegram() {
-            const botLink = `https://t.me/Earnfast11_bot?startapp=${userData.referralCode}`;
-            const text = `Join EarnFast & get ${SETTINGS.signupBonus} Coins Bonus! 🚀\nPlay Games & Earn Money.\n\n👇 Click here:\n${botLink}`;
+            const botLink = `https://t.me/PlaynEarn1bot?startapp=${userData.referralCode}`;
+            const text = `Join Play & Earn & get ${SETTINGS.signupBonus} Coins Bonus! 🚀\nPlay Games & Earn Money.\n\n👇 Click here:\n${botLink}`;
             const url = `https://t.me/share/url?url=${encodeURIComponent(botLink)}&text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
         }
