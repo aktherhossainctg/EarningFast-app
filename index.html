@@ -187,7 +187,7 @@
                         <div class="payment-slide active">
                             <div class="flex items-center gap-2">
                                 <img src="https://ui-avatars.com/api/?name=R&background=random" class="w-6 h-6 rounded-full">
-                                <span class="text-xs text-slate-300">Rahul withdrew <span class="text-green-400 font-bold">₹20</span></span>
+                                <span class="text-xs text-slate-300">Rahul withdrew <span class="text-green-400 font-bold">৳20</span></span>
                             </div>
                         </div>
                     </div>
@@ -278,7 +278,7 @@
                         <span id="wallet-balance">0</span> <span class="text-2xl text-yellow-500"><i class="fas fa-coins"></i></span>
                     </h1>
                     <div class="inline-block bg-slate-800/80 backdrop-blur border border-white/10 px-4 py-1.5 rounded-full text-xs text-slate-300">
-                        Rate: 100 Coins = <span id="val-disp" class="text-green-400 font-bold">₹1</span>
+                        Rate: 100 Coins = <span id="val-disp" class="text-green-400 font-bold">৳1</span>
                     </div>
                 </div>
                 <div class="glass-card rounded-2xl p-5 mb-8">
@@ -462,8 +462,8 @@
             gameReward: 10, 
             referBonus: 500, 
             signupBonus: 100, 
-            coinValue: "₹1", 
-            paymentMethods: ['Paytm', 'UPI', 'Google Pay'],
+            coinValue: "৳1", 
+            paymentMethods: ['bKash', 'Nagad', 'Rocket'],
             tttReward: 10,
             mathReward: 10,
             minWithdraw: 100 // Added Default
@@ -528,7 +528,7 @@
                 const rAmt = amounts[Math.floor(Math.random() * amounts.length)];
                 const div = document.createElement('div');
                 div.className = 'payment-slide';
-                div.innerHTML = `<div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${rName}&background=random" class="w-6 h-6 rounded-full"><span class="text-xs text-slate-300">${rName} withdrew <span class="text-green-400 font-bold">₹${rAmt}</span></span></div>`;
+                div.innerHTML = `<div class="flex items-center gap-2"><img src="https://ui-avatars.com/api/?name=${rName}&background=random" class="w-6 h-6 rounded-full"><span class="text-xs text-slate-300">${rName} withdrew <span class="text-green-400 font-bold">৳${rAmt}</span></span></div>`;
                 slider.appendChild(div);
                 setTimeout(() => div.classList.add('active'), 50);
             }, 3500);
@@ -820,16 +820,26 @@
         }
 
         function updatePlaceholder() {
-            const select = document.getElementById('withdraw-method');
-            const input = document.getElementById('withdraw-details');
-            const val = select.value.toLowerCase();
-            
-            if(val.includes('upi')) input.placeholder = "Enter UPI ID (e.g. name@okhdfcbank)";
-            else if(val.includes('paytm') || val.includes('number') || val.includes('gpay') || val.includes('phonepe')) input.placeholder = "Enter Mobile Number";
-            else if(val.includes('paypal') || val.includes('email')) input.placeholder = "Enter Email Address";
-            else if(val.includes('bank')) input.placeholder = "Enter Account No. & IFSC";
-            else input.placeholder = "Enter Payment Details";
-        }
+    const select = document.getElementById('withdraw-method');
+    const input = document.getElementById('withdraw-details');
+    
+    // যদি কোনো মেথড সিলেক্ট করা না থাকে
+    if (!select.value) {
+        input.placeholder = "Select Method First";
+        return;
+    }
+
+    const val = select.value.toLowerCase();
+    
+    // বিকাশ, নগদ বা রকেট সিলেক্ট করলে অ্যাকাউন্ট নাম্বার চাইবে
+    if(val.includes('bkash') || val.includes('nagad') || val.includes('rocket')) {
+        input.placeholder = "Enter Account Number (e.g. 017XXXXXXXX)";
+    }
+    // অন্য কোনো নতুন মেথড অ্যাড করলে ডিফল্ট মেসেজ দেখাবে
+    else {
+        input.placeholder = "Enter Payment Details";
+    }
+}
 
         function showPage(pageId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
